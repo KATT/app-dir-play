@@ -18,7 +18,11 @@ async function addPost(formData: FormData) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   if (!title || !content) {
-    throw new Error("Title and content are required");
+    return {
+      status: 400,
+      error: "Title and content are required",
+    };
+    // throw new Error("Title and content are required");
   }
 
   posts.push({ id: Math.random(), title, content });
