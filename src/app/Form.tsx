@@ -15,10 +15,11 @@ type SubmitButtonProps = Overwrite<
 export function SubmitButton(props: SubmitButtonProps) {
   const formStatus = experimental_useFormStatus();
 
+  const { pendingProps, ...other } = props;
   return (
     <button
-      {...props}
-      {...(formStatus.pending && props.pendingProps)}
+      {...other}
+      {...(formStatus.pending && pendingProps)}
       type='submit'
       className={twMerge(
         props.className,
