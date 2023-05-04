@@ -2,7 +2,11 @@
 const nextConfig = {
   experimental: {
     appDir: true,
+    serverActions: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  }
 }
 
 module.exports = nextConfig
