@@ -50,6 +50,7 @@ export function Form(
     onSuccess(data) {
       alert("onSuccess:" + JSON.stringify(data, null, 4));
       router.refresh();
+      ref.current?.reset();
     },
     onError(data) {
       alert("onError:" + JSON.stringify(data, null, 4));
