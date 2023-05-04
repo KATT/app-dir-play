@@ -18,18 +18,12 @@ async function addPost(formData: FormData) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   if (!title || !content) {
-    return {
-      errors: "Missing stuff",
-    };
+    throw new Error("Title and content are required");
   }
 
   posts.push({ id: Math.random(), title, content });
 
   revalidatePath("/");
-
-  return NextResponse.json({
-    message: "Post added",
-  });
 }
 
 function InputGroup(props: { children: React.ReactNode }) {
