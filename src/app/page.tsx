@@ -39,6 +39,7 @@ function Section(props: { children: React.ReactNode }) {
 
 function PostItem(props: { post: (typeof posts)[number] }) {
   const { post } = props;
+  const postId = post.id;
   return (
     <li className='flex flex-col gap-2'>
       <h2 className='text-2xl font-bold'>{post.title}</h2>
@@ -46,7 +47,12 @@ function PostItem(props: { post: (typeof posts)[number] }) {
       <Form
         action={async () => {
           "use server";
-          const idx = posts.findIndex((it) => it.id === post.id);
+          console.log(".... deleting post", postId);
+
+          const idx = posts.findIndex((it) => it.id === postId);
+
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
           if (idx === -1) {
             throw new Error("Post not found");
           }
