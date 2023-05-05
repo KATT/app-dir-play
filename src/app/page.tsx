@@ -47,9 +47,9 @@ function PostItem(props: { post: (typeof posts)[number] }) {
       <Form
         action={async () => {
           "use server";
-          console.log(".... deleting post", postId);
+          console.log(".... deleting post", post.id);
 
-          const idx = posts.findIndex((it) => it.id === postId);
+          const idx = posts.findIndex((it) => it.id === post.id);
 
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
