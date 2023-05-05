@@ -39,7 +39,7 @@ function Section(props: { children: React.ReactNode }) {
 
 function PostItem(props: { post: (typeof posts)[number] }) {
   const { post } = props;
-  const postId = post.id;
+
   return (
     <li className='flex flex-col gap-2'>
       <h2 className='text-2xl font-bold'>{post.title}</h2>
