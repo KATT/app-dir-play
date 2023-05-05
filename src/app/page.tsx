@@ -1,11 +1,14 @@
 import { revalidatePath } from "next/cache";
 import { Form, SubmitButton } from "./Form";
 
+import { Temporal } from "@js-temporal/polyfill";
+
 const posts = [
   {
     id: 1,
     title: "Hello World",
     content: "This is my first post",
+    createdAt: Temporal.Now.instant(),
   },
 ];
 
@@ -24,7 +27,12 @@ async function addPost(formData: FormData) {
     // throw new Error("Title and content are required");
   }
 
-  posts.push({ id: Math.random(), title, content });
+  posts.push({
+    id: Math.random(),
+    title,
+    content,
+    createdAt: Temporal.Now.instant(),
+  });
 
   revalidatePath("/");
 }
@@ -37,7 +45,8 @@ function Section(props: { children: React.ReactNode }) {
   return <section className='space-y-4'>{props.children} </section>;
 }
 
-function PostItem(props: { post: (typeof posts)[number] }) {
+type Post = (typeof posts)[number];
+function PostItem(props: { post: Post }) {
   const { post } = props;
 
   return (
@@ -47,7 +56,7 @@ function PostItem(props: { post: (typeof posts)[number] }) {
       <Form
         action={async () => {
           "use server";
-          console.log(".... deleting post", post.id);
+          console.log(".... deleting post", post);
 
           const idx = posts.findIndex((it) => it.id === post.id);
 
