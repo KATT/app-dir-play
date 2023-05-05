@@ -62,20 +62,23 @@ export function Form(
         {props.children}
       </form>
 
-      <button
-        type='button'
-        className={twMerge(
-          "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded",
-          action.status === "pending" &&
-            "bg-gray-400 text-gray-500 cursor-not-allowed",
-        )}
-        onClick={() => {
-          action.mutate(new FormData(ref.current!));
-        }}
-        disabled={action.status === "pending"}
-      >
-        Test calling action by invoking it rather than using form action
-      </button>
+      <details>
+        <summary>Hax</summary>
+        <button
+          type='button'
+          className={twMerge(
+            "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded",
+            action.status === "pending" &&
+              "bg-gray-400 text-gray-500 cursor-not-allowed",
+          )}
+          onClick={() => {
+            action.mutate(new FormData(ref.current!));
+          }}
+          disabled={action.status === "pending"}
+        >
+          Test calling action by invoking it rather than using form action
+        </button>
+      </details>
     </>
   );
 }

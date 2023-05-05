@@ -1,6 +1,5 @@
 import { revalidatePath } from "next/cache";
 import { Form, SubmitButton } from "./Form";
-import { NextResponse } from "next/server";
 
 const posts = [
   {
@@ -38,6 +37,32 @@ function Section(props: { children: React.ReactNode }) {
   return <section className='space-y-4'>{props.children} </section>;
 }
 
+function PostItem(props: { post: (typeof posts)[number] }) {
+  const { post } = props;
+  return (
+    <li className='flex flex-col gap-2'>
+      <h2 className='text-2xl font-bold'>{post.title}</h2>
+      <p>{post.content}</p>
+      <Form
+        action={async () => {
+          "use server";
+          const idx = posts.findIndex((it) => it.id === post.id);
+          if (idx === -1) {
+            throw new Error("Post not found");
+          }
+
+          posts.splice(idx, 1);
+          revalidatePath("/");
+        }}
+      >
+        <SubmitButton className='bg-red-500 text-white p-2 rounded-md cursor-pointer'>
+          Delete
+        </SubmitButton>
+      </Form>
+    </li>
+  );
+}
+
 export default function Home() {
   return (
     <main className='min-h-screen items-center p-24 space-y-8'>
@@ -47,10 +72,7 @@ export default function Home() {
 
         <ul className='space-y-4'>
           {posts.map((post) => (
-            <li key={post.id} className='flex flex-col gap-2'>
-              <h2 className='text-2xl font-bold'>{post.title}</h2>
-              <p>{post.content}</p>
-            </li>
+            <PostItem key={post.id} post={post} />
           ))}
         </ul>
       </Section>
