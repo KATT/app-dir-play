@@ -4,6 +4,12 @@ dependencies:
   '@js-temporal/polyfill':
     specifier: ^0.4.3
     version: 0.4.3
+  '@trpc/client':
+    specifier: ^10.25.1
+    version: 10.25.1(@trpc/server@10.25.1)
+  '@trpc/server':
+    specifier: ^10.25.1
+    version: 10.25.1
   '@types/node':
     specifier: 18.16.3
     version: 18.16.3
@@ -43,6 +49,9 @@ dependencies:
   typescript:
     specifier: 5.0.4
     version: 5.0.4
+  zod:
+    specifier: ^3.21.4
+    version: 3.21.4
 
 packages:
 
@@ -289,6 +298,18 @@ packages:
     resolution: {integrity: sha512-sJ902EfIzn1Fa+qYmjdQqh8tPsoxyBz+8yBKC2HKUxyezKJFwPGOn7pv4WY6QuQW//ySQi5lJjA/ZT9sNWWNTg==}
     dependencies:
       tslib: 2.5.0
+    dev: false
+
+  /@trpc/client@10.25.1(@trpc/server@10.25.1):
+    resolution: {integrity: sha512-6ymAOKrbUgi6H/MxDZiDXXiADCF0B2fsGewBe7yWSQGNl/MK1GTuIzltJ6WAUqjmMmzrCxE621uzUihdFZ4tow==}
+    peerDependencies:
+      '@trpc/server': 10.25.1
+    dependencies:
+      '@trpc/server': 10.25.1
+    dev: false
+
+  /@trpc/server@10.25.1:
+    resolution: {integrity: sha512-zi08QKVvWPK0EEGpEy7i5PlOK9CBlQb3LqiIdmaIpe27DzFNz6+yZ4qXwsLXTwDcDphELl/BNw+RzzQ2+Ou2vw==}
     dev: false
 
   /@types/json5@0.0.29:

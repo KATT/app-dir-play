@@ -46,7 +46,7 @@ function Section(props: { children: React.ReactNode }) {
 }
 
 type Post = (typeof posts)[number];
-function PostItem(props: { post: Post }) {
+function PostItem(props: { post: Post; superSecretSessionKey: string }) {
   const { post } = props;
 
   return (
@@ -87,7 +87,11 @@ export default function Home() {
 
         <ul className='space-y-4'>
           {posts.map((post) => (
-            <PostItem key={post.id} post={post} />
+            <PostItem
+              key={post.id}
+              post={post}
+              superSecretSessionKey={"DO_NOT_SEND_ME_TO_CLIENT"}
+            />
           ))}
         </ul>
       </Section>
