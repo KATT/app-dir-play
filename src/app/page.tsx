@@ -1,17 +1,13 @@
 import { revalidatePath } from "next/cache";
-import { Form, SubmitButton } from "./Form";
-import { createPost } from "./_action";
-import { posts } from "./data";
+import { Form, SubmitButton } from "~/components/Form";
+import { createPost } from "./actions";
+import { Post, posts } from "./data";
+import { Input, InputGroup, TextArea } from "~/components/Input";
 
-function InputGroup(props: { children: React.ReactNode }) {
-  return <div className="flex flex-col space-y-1">{props.children}</div>;
-}
-
-function Section(props: { children: React.ReactNode }) {
+export function Section(props: { children: React.ReactNode }) {
   return <section className="space-y-4">{props.children} </section>;
 }
 
-type Post = (typeof posts)[number];
 function PostItem(props: { post: Post; superSecretSessionKey: string }) {
   const { post } = props;
 
@@ -67,17 +63,12 @@ export default function Home() {
           <InputGroup>
             <label htmlFor="title">Title</label>
 
-            <input
-              type="text"
-              name="title"
-              id="title"
-              className="text-gray-900"
-            />
+            <Input type="text" name="title" id="title" />
           </InputGroup>
 
           <InputGroup>
             <label htmlFor="content">Content</label>
-            <textarea name="content" id="content" className="text-gray-900" />
+            <TextArea name="content" id="content" />
           </InputGroup>
 
           <SubmitButton

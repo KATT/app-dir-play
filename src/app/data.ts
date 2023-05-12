@@ -8,3 +8,5 @@ export const posts = [
     createdAt: Temporal.Now.instant(),
   },
 ];
+
+export type Post = (typeof posts)[number];
