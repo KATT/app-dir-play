@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { createAction, serverActionProc } from "../utils/trpc";
 import { posts } from "./data";
-import { Temporal } from "@js-temporal/polyfill";
 import { revalidatePath } from "next/cache";
 
 export const createPost = createAction(
@@ -29,7 +28,7 @@ export const createPost = createAction(
         id: Math.random(),
         title: opts.input.title,
         content: opts.input.content,
-        createdAt: Temporal.Now.instant(),
+        createdAt: Date.now(),
       });
 
       revalidatePath("/");
