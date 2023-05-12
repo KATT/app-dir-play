@@ -2,10 +2,9 @@
 
 import { twMerge } from "tailwind-merge";
 import { experimental_useFormStatus } from "react-dom";
-import { useEffect, useRef } from "react";
-import { revalidatePath } from "next/cache";
+import { useRef } from "react";
 import { useRouter } from "next/navigation";
-import { useAction } from "./useAction";
+import { useAction } from "@trpc/actions/client";
 
 type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 
@@ -17,18 +16,20 @@ type SubmitButtonProps = Overwrite<
   }
 >;
 export function SubmitButton(props: SubmitButtonProps) {
-  const formStatus = experimental_useFormStatus();
+  // FIXME hack cause useFormStatus is not available on server - bug n react
+  const formStatus = experimental_useFormStatus?.();
+  const formPending = formStatus?.pending ?? false;
 
   const { pendingProps, ...other } = props;
 
   return (
     <button
       {...other}
-      {...(formStatus.pending && pendingProps)}
-      type='submit'
+      {...(formPending && pendingProps)}
+      type="submit"
       className={twMerge(
         props.className,
-        formStatus.pending && props.pendingProps?.className,
+        formPending && props.pendingProps?.className
       )}
     />
   );
@@ -41,7 +42,7 @@ export function Form(
       action: (fn: FormData) => Promise<unknown>;
       method?: "POST";
     }
-  >,
+  >
 ) {
   const router = useRouter();
   const ref = useRef<HTMLFormElement>(null);
@@ -58,18 +59,18 @@ export function Form(
   });
   return (
     <>
-      <form {...props} action={props.action} method='POST' ref={ref}>
+      <form {...props} action={props.action} method="POST" ref={ref}>
         {props.children}
       </form>
 
       <details>
         <summary>Hax</summary>
         <button
-          type='button'
+          type="button"
           className={twMerge(
             "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded",
             action.status === "pending" &&
-              "bg-gray-400 text-gray-500 cursor-not-allowed",
+              "bg-gray-400 text-gray-500 cursor-not-allowed"
           )}
           onClick={() => {
             action.mutate(new FormData(ref.current!));
