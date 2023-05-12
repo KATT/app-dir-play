@@ -23,7 +23,6 @@ export function createServerActionHandler<TInstance extends AnyTObject>(
     return async function invoke(input: unknown) {
       // TODO error handling
       return proc({
-        input: undefined,
         ctx: await opts.createContext(),
         path: "serverAction",
         rawInput: input,

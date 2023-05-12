@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { createAction, serverActionProc } from "./utils/trpc";
+import { createAction, serverActionProc } from "../utils/trpc";
 import { posts } from "./data";
 import { Temporal } from "@js-temporal/polyfill";
 import { revalidatePath } from "next/cache";

@@ -1,5 +1,5 @@
 import { initTRPC } from "@trpc/server";
-import { createServerActionHandler } from "../_lib";
+import { createServerActionHandler } from "@trpc/actions";
 
 type Session = {
   user: {
