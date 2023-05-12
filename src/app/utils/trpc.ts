@@ -39,7 +39,7 @@ function createServerActionHandler<TInstance extends TRPCInstance>(
         rawInput: input,
         type: proc._type,
       }) as inferProcedureOutput<TProc> & {
-        _proc: TProc;
+        $proc: TProc;
       };
     };
   };
