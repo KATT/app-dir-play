@@ -1,36 +1,37 @@
 "use server";
-import { TRPCError } from "@trpc/server";
-import { z } from "zod";
-import { createAction, publicProcedure } from "./utils/trpc";
 
-// Idea of procedure that can handle both form data and called as action
-const normalizeRawInputProcedure = publicProcedure.use((opts) => {
-  if (opts.rawInput instanceof FormData) {
-    return opts.next({
-      rawInput: Object.fromEntries(opts.rawInput),
-    });
-  }
-  return opts.next();
-});
+import { z } from "zod";
+import { createAction, serverActionProc } from "./utils/trpc";
+import { posts } from "./data";
+import { Temporal } from "@js-temporal/polyfill";
+import { revalidatePath } from "next/cache";
 
 export const createPost = createAction(
-  publicProcedure
+  serverActionProc
     .input(
       z.object({
-        file: z.instanceof(File),
-      }),
+        title: z.string(),
+        content: z.string(),
+      })
     )
     .mutation(async (opts) => {
-      const session = await opts.ctx.getSession();
+      // const session = await opts.ctx.getSession();
 
-      if (!session) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-        });
-      }
+      // if (!session) {
+      //   throw new TRPCError({
+      //     code: "UNAUTHORIZED",
+      //   });
+      // }
 
-      return {
-        id: "123",
-      };
-    }),
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      posts.push({
+        id: Math.random(),
+        title: opts.input.title,
+        content: opts.input.content,
+        createdAt: Temporal.Now.instant(),
+      });
+
+      revalidatePath("/");
+    })
 );

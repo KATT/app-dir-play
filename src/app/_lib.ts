@@ -1,8 +1,36 @@
-import { AnyProcedure, inferProcedureOutput } from "@trpc/server";
+import type {
+  AnyProcedure,
+  AnyRootConfig,
+  DataTransformer,
+  MaybePromise,
+  inferProcedureOutput,
+} from "@trpc/server";
 
-export function asAction<T extends AnyProcedure>(
-  proc: T,
-): Promise<inferProcedureOutput<T>> {
-  // ... call procedure
-  throw new Error();
+type AnyTObject = {
+  _config: AnyRootConfig;
+  transformer?: DataTransformer;
+  // errorFormatter?: ErrorFormatter<any, any>;
+  // ...
+};
+
+export function createServerActionHandler<TInstance extends AnyTObject>(
+  t: TInstance,
+  opts: {
+    createContext: () => MaybePromise<TInstance["_config"]["$types"]["ctx"]>;
+  }
+) {
+  return function createServerAction<TProc extends AnyProcedure>(proc: TProc) {
+    return async function invoke(input: unknown) {
+      // TODO error handling
+      return proc({
+        input: undefined,
+        ctx: await opts.createContext(),
+        path: "serverAction",
+        rawInput: input,
+        type: proc._type,
+      }) as inferProcedureOutput<TProc> & {
+        $proc: TProc;
+      };
+    };
+  };
 }
