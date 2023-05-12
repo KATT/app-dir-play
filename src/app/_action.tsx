@@ -1,9 +1,9 @@
 "use server";
-import { z } from "zod";
-import { publicProcedure } from "./utils/trpc";
 import { TRPCError } from "@trpc/server";
-import { asAction } from "./_lib";
+import { z } from "zod";
+import { createAction, publicProcedure } from "./utils/trpc";
 
+// Idea of procedure that can handle both form data and called as action
 const normalizeRawInputProcedure = publicProcedure.use((opts) => {
   if (opts.rawInput instanceof FormData) {
     return opts.next({
@@ -13,7 +13,7 @@ const normalizeRawInputProcedure = publicProcedure.use((opts) => {
   return opts.next();
 });
 
-export const createPost = asAction(
+export const createPost = createAction(
   publicProcedure
     .input(
       z.object({
@@ -29,6 +29,8 @@ export const createPost = asAction(
         });
       }
 
-      // ...
+      return {
+        id: "123",
+      };
     }),
 );
